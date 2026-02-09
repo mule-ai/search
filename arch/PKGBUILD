@@ -1,0 +1,23 @@
+# Arch Linux AUR PKGBUILD for search CLI
+# Maintainer: Mule AI <dev@mule-ai.com>
+
+pkgname=search-bin
+pkgver=0.1.0
+pkgrel=1
+pkgdesc="A command-line search tool using SearXNG"
+arch=("x86_64" "aarch64")
+url="https://github.com/mule-ai/search"
+license=("MIT")
+depends=("glibc")
+provides=("search")
+conflicts=("search" "search-git")
+
+prepare() {
+    cd "$srcdir"
+}
+
+package() {
+    install -Dm755 "search" "${pkgdir}/usr/bin/search"
+    install -Dm644 "README.md" "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+    install -Dm644 "LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}

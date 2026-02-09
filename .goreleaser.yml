@@ -1,0 +1,141 @@
+# GoReleaser configuration for search CLI
+project_name: search
+
+before:
+  hooks:
+    - go mod tidy
+    - go generate ./...
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+      - "386"
+    goarm:
+      - "6"
+      - "7"
+    ignore:
+      - goos: windows
+        goarch: arm64
+      - goos: darwin
+        goarch: "386"
+    ldflags:
+      - -s -w
+      - -X github.com/mule-ai/search/pkg/version.Version={{.Version}}
+      - -X github.com/mule-ai/search/pkg/version.GitCommit={{.Commit}}
+      - -X github.com/mule-ai/search/pkg/version.BuildDate={{.Date}}
+      - -X github.com/mule-ai/search/pkg/version.GoVersion={{.Env.GOVERSION}}
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags:
+      - -trimpath
+
+# UPX compression for Linux and macOS builds (reduces binary size by ~60%)
+upx:
+  - enabled: true
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    compress:
+      - --best
+      - --lzma
+    args:
+      - --force
+      - --no-color
+
+archives:
+  - name_template: >-
+      {{ .ProjectName }}_{{ .Version }}_
+      {{- title .Os }}_{{- if eq .Arch "amd64" }}x86_64
+      {{- else if eq .Arch "386" }}i386
+      {{- else if eq .Arch "arm" }}arm
+      {{- else }}{{ .Arch }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+    files:
+      - LICENSE
+      - README.md
+      - docs/*
+
+checksum:
+  name_template: "{{ .ProjectName }}_{{ .Version }}_checksums.txt"
+  algorithm: sha256
+
+signs:
+  - artifacts: checksum
+    args:
+      - "--batch"
+      - "--local-user"
+      - "{{ .Env.GPG_FINGERPRINT }}"
+      - "--output"
+      - "${signature}"
+      - "--detach-sign"
+      - "${artifact}"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^ci:"
+      - "^chore:"
+      - "^style:"
+      - "^refactor:"
+
+brews:
+  - name: search
+    repository:
+      owner: mule-ai
+      name: homebrew-tap
+    commit_author:
+      name: goreleaser-bot
+      email: bot@goreleaser.com
+    homepage: https://github.com/mule-ai/search
+    description: "A command-line search tool using SearXNG"
+    license: MIT
+    skip_upload: auto
+    test: |
+      system "#{bin}/search --version"
+
+scoops:
+  - name: search
+    repository:
+      owner: mule-ai
+      name: scoop-bucket
+    commit_author:
+      name: goreleaser-bot
+      email: bot@goreleaser.com
+    homepage: https://github.com/mule-ai/search
+    description: "A command-line search tool using SearXNG"
+    license: MIT
+
+nix:
+  - name: search
+    repository:
+      owner: mule-ai
+      name: nix-flakes
+    homepage: https://github.com/mule-ai/search
+    description: "A command-line search tool using SearXNG"
+    path: ./pkgs/search
+    license: mit
+
+release:
+  github:
+    owner: mule-ai
+    name: search
+  draft: false
+  prerelease: auto
+  mode: replace
+
+announce:
+  skip: "{{ .Env.CI_ANNOUCE_SKIP }}"

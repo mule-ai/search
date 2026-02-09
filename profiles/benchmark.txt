@@ -1,0 +1,47 @@
+=== SearXNG Client Benchmarks ===
+goos: linux
+goarch: amd64
+pkg: github.com/mule-ai/search/internal/searxng
+cpu: 13th Gen Intel(R) Core(TM) i9-13900H
+BenchmarkSearchRequestCreation-16    	1000000000	         0.1567 ns/op	       0 B/op	       0 allocs/op
+BenchmarkJSONParsing-16              	  130312	     11368 ns/op	    3984 B/op	      42 allocs/op
+BenchmarkJSONParsingLarge-16         	   10000	    114214 ns/op	   33528 B/op	     369 allocs/op
+BenchmarkNewClient-16                	1000000000	         0.1435 ns/op	       0 B/op	       0 allocs/op
+BenchmarkNewClientWithTimeout-16     	1000000000	         0.2562 ns/op	       0 B/op	       0 allocs/op
+BenchmarkResultProcessing-16         	439182840	         2.793 ns/op	       0 B/op	       0 allocs/op
+BenchmarkFilterResults-16            	 1000000	      1122 ns/op	    5088 B/op	       5 allocs/op
+BenchmarkSortResults-16              	   82861	     13751 ns/op	    8192 B/op	       1 allocs/op
+BenchmarkResponseValidation-16       	1000000000	         0.4735 ns/op	       0 B/op	       0 allocs/op
+BenchmarkCategoryMapping-16          	794423416	         1.561 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSearchRequestOptions-16     	1000000000	         1.023 ns/op	       0 B/op	       0 allocs/op
+BenchmarkRequestWithAllOptions-16    	1000000000	         0.1218 ns/op	       0 B/op	       0 allocs/op
+BenchmarkInfoboxParsing-16           	1000000000	         0.1306 ns/op	       0 B/op	       0 allocs/op
+BenchmarkAnswerParsing-16            	1000000000	         0.1348 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSuggestionProcessing-16     	1000000000	         1.227 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScoreCalculation-16         	52017666	        25.20 ns/op	       0 B/op	       0 allocs/op
+BenchmarkURLParsing-16               	1000000000	         0.1409 ns/op	       0 B/op	       0 allocs/op
+BenchmarkEngineListProcessing-16     	 5708758	       208.8 ns/op	     216 B/op	       8 allocs/op
+BenchmarkTimeRangeOptions-16         	1000000000	         1.102 ns/op	       0 B/op	       0 allocs/op
+BenchmarkClientSearch-16             	   29654	     34323 ns/op	   10853 B/op	     124 allocs/op
+PASS
+ok  	github.com/mule-ai/search/internal/searxng	21.454s
+
+=== Formatter Benchmarks ===
+goos: linux
+goarch: amd64
+pkg: github.com/mule-ai/search/internal/formatter
+cpu: 13th Gen Intel(R) Core(TM) i9-13900H
+BenchmarkJSONFormatter-16        	    7002	    161834 ns/op	  126155 B/op	    1085 allocs/op
+BenchmarkMarkdownFormatter-16    	   18859	     65294 ns/op	   71370 B/op	     718 allocs/op
+BenchmarkTextFormatter-16        	   20326	     62261 ns/op	   78574 B/op	     919 allocs/op
+BenchmarkOptimizedJSON-16        	   10396	    100191 ns/op	  105552 B/op	      19 allocs/op
+BenchmarkOptimizedMarkdown-16    	   63306	     16043 ns/op	   17217 B/op	      53 allocs/op
+BenchmarkOptimizedText-16        	   25990	     49491 ns/op	   56424 B/op	     351 allocs/op
+BenchmarkFormatterSmall/JSON-16  	   33069	     36611 ns/op	   26478 B/op	     243 allocs/op
+BenchmarkFormatterSmall/Markdown-16         	   92769	     13353 ns/op	   12377 B/op	     153 allocs/op
+BenchmarkFormatterSmall/Text-16             	  118912	     12557 ns/op	   13818 B/op	     194 allocs/op
+BenchmarkFormatterLarge/JSON-16             	    4449	    336772 ns/op	  248395 B/op	    2137 allocs/op
+BenchmarkFormatterLarge/Markdown-16         	   10000	    120891 ns/op	  163642 B/op	    1401 allocs/op
+BenchmarkFormatterLarge/Text-16             	   10000	    114776 ns/op	  178075 B/op	    1802 allocs/op
+PASS
+ok  	github.com/mule-ai/search/internal/formatter	18.587s

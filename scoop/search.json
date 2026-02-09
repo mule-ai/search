@@ -1,0 +1,24 @@
+{
+    "version": "0.1.0",
+    "description": "Command-line search tool using SearXNG",
+    "homepage": "https://github.com/mule-ai/search",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/mule-ai/search/releases/download/v0.1.0/search_0.1.0_Windows_x86_64.zip",
+            "hash": "SKIP"
+        }
+    },
+    "bin": "search.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/mule-ai/search/releases/download/v$version/search_$version_Windows_x86_64.zip"
+            }
+        },
+        "hash": {
+            "url": "$baseurl/checksums.txt"
+        }
+    }
+}
